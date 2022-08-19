@@ -40,7 +40,8 @@
                                 </a><!--end-item-->
                             @endforeach
                         @else
-                            <li class="text-center"><h4>No notification yet!</h4></li>
+                           
+                            
                         @endif
                     </div>
                     <!-- All-->

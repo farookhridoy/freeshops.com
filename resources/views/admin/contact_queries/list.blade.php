@@ -49,9 +49,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($list as $item)
+                            @if(isset($list[0]))
+                            @foreach ($list as $key=> $item)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td>{{  ($list->currentpage()-1) * $list->perpage() + $key + 1  }}</td>
                                 <td>{{ $item->created_at->format('d M, Y') }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->email }}</td>
@@ -68,9 +69,20 @@
                                 </td>
                             </tr>
                             @endforeach
+                            @endif
                         </tbody>
                     </table>
+
                 </div>
+                <div class="row">
+                        <div class="col-md-12">
+                            <div class="pull-right">
+                                @if($list)
+                                    {{$list->links()}}
+                                @endif
+                            </div>
+                        </div>
+                    </div>
             </div>
         </div> <!-- end col -->
     </div> <!-- end row -->

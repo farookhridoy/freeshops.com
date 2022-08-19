@@ -10,8 +10,9 @@ class ContactController extends Controller
 {
     public function list()
     {
-        $list = ContactUs::orderBy('id','DESC')->get();
-        return view('admin.contact_queries.list', get_defined_vars());
+        $list = ContactUs::orderBy('id','DESC')->paginate(30);
+         
+        return view('admin.contact_queries.list', compact('list'));
     }
     public function delete($id = null)
     {
