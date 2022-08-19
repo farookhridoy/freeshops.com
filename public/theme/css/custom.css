@@ -1,0 +1,333 @@
+.font-8 {
+    font-size: 8px !important;
+}
+
+.font-10 {
+    font-size: 10px !important;
+}
+
+.font-12 {
+    font-size: 12px !important;
+}
+
+.font-14 {
+    font-size: 14px !important;
+}
+
+.font-16 {
+    font-size: 16px !important;
+}
+
+.font-18 {
+    font-size: 18px !important;
+}
+
+.font-20 {
+    font-size: 20px !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+#topnav {
+    background: #ffffff;
+    -webkit-box-shadow: 0 0 3px rgb(60 72 88 / 15%);
+    box-shadow: 0 0 3px rgb(60 72 88 / 15%);
+}
+
+#topnav .logo {
+    float: none;
+    line-height: normal;
+    padding: 0px;
+}
+
+#topnav .navigation-menu {
+    display: block;
+}
+
+#topnav .navigation-menu > li > a {
+    text-transform: capitalize;
+    font-weight: 600;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    min-height: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#topnav .navigation-menu .has-submenu .menu-arrow {
+    top: 10px;
+}
+
+#topnav .location {
+    display: inline-block;
+    color: #3c4858;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+    font-family: "Nunito", sans-serif;
+}
+
+#topnav .location svg {
+    width: 15px;
+    height: 15px;
+}
+
+#topnav .navigation-menu > li .submenu li a {
+    text-transform: capitalize;
+}
+
+.top-nav > ul {
+    padding: 0px;
+    margin: 0px;
+}
+
+.top-nav > ul > li {
+    display: inline-block;
+    list-style: none;
+}
+
+.top-nav > ul > li > a {
+    display: inline-block;
+    color: #3c4858;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    line-height: 24px;
+    text-transform: capitalize;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+    font-family: "Nunito", sans-serif;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.section {
+    padding: 120px 0;
+    position: relative;
+}
+
+.facebook,
+.facebook:hover {
+    background-color: #4267B2 !important;
+    border-color: #4267B2 !important;
+}
+
+.google,
+.google:hover {
+    background-color: #4285F4 !important;
+    border-color: #4285F4 !important;
+}
+
+.bg-profile {
+    padding: 50px 0px;
+}
+
+.bg-profile .public-profile {
+    top: 150px;
+}
+
+.fileuploader-input .fileuploader-input-caption {
+    color: inherit;
+}
+
+.fileuploader-input .fileuploader-input-button,
+.fileuploader-popup .fileuploader-popup-content .fileuploader-popup-button.button-success {
+    background: none;
+    background-color: #f85c70 !important;
+    border-color: #f85c70 !important;
+    box-shadow: 0 3px 5px 0 rgb(248 92 112 / 30%);
+}
+
+#map {
+    height: 350px;
+}
+
+.bg-half {
+    padding: 150px 0 40px;
+}
+
+.page-next-level .page-next {
+    top: 50px;
+}
+
+.pending-pointer span {
+    position: absolute;
+    top: 10%;
+    left: 5%;
+    border-radius: 100%;
+    padding: 0px;
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+    text-align: center;
+}
+
+.notification-dropdown {
+    width: 350px;
+    max-height:400px;
+    overflow-y:auto;
+    margin: 0px;
+    padding: 0px;
+}
+
+.notification-dropdown .notifications {
+    padding: 0px;
+    margin: 0px;
+    display: block;
+    list-style: none;
+}
+
+.notification-dropdown .notifications li {
+    list-style: none;
+    display: block;
+    padding: 10px 12px;
+    border-top: 1px solid #eee;
+    cursor: pointer;
+    transition: 0.3s all ease-in-out;
+}
+
+.notification-dropdown .notifications li.active {
+    background-color: #f8f9fc;
+    transition: 0.3s all ease-in-out;
+}
+
+.notification-dropdown .notifications li:hover {
+    background-color: #f8f9fc;
+    transition: 0.3s all ease-in-out;
+}
+
+.notification-dropdown .notifications li .notif-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+}
+
+.notification-dropdown .notifications li .notif-icon img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    object-fit: cover;
+}
+
+.notification-dropdown .notifications li p {
+    margin: 0px;
+    padding: 0px;
+    font-size: 12px;
+}
+
+.notification-dropdown .notifications li small {
+    font-size: 10px;
+}
+
+.notif-drop {
+    position: relative;
+}
+
+.notif-drop::after {
+    position: absolute;
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 100px;
+    background-color: red;
+    top: 20%;
+    left: 25%;
+}
+
+.zip-code-area {
+    padding: 4rem 1.5rem;
+}
+
+.distance-area {
+    padding: 1rem 1.5rem;
+}
+
+.zip-code-area .zip-code {
+    cursor: pointer;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid #eee;
+}
+
+.zip-code-area p,
+.distance-area p {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.zip-code-area span {
+    font-size: 16px;
+}
+
+.chat-active-order {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    padding: 0.3rem 0.5rem;
+    z-index: 99;
+}
+
+.chat-active-order p {
+    margin-bottom: 0px;
+    font-weight: 700;
+}
+
+.chat-active-order ol {
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+
+.chat-active-order ol li {
+    font-size: 12px;
+}
+
+.warning-message {
+    display: none;
+    position: absolute;
+    bottom: 8%;
+    left: 0px;
+    width: 100%;
+    padding: 0.5rem 0.5rem;
+    background-color: #ffffff;
+}
+
+.blog-card-image {
+    width: 100%;
+    height: 265px;
+}
+
+.blog-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+
+@media (min-width: 992px) {
+    #topnav .navigation-menu > .has-submenu:hover .menu-arrow {
+        top: 15px !important;
+    }
+}
+
+@media (max-width: 991px) {
+    #navigation {
+        top: 0px;
+    }
+}
+
+@media (max-width: 576px) {
+    #topnav .menu-extras {
+        float: none;
+    }
+
+    .bg-half {
+        padding: 175px 0 40px;
+    }
+}
