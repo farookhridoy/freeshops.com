@@ -27,7 +27,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.0/sweetalert2.min.css" rel="stylesheet">
-
+    <!-- toastr alert -->
+    <link rel="stylesheet" href="{{asset('notification_assets/css/toastr.min.css')}}" />
     @yield('css')
 </head>
 
@@ -38,51 +39,53 @@
     <!-- Navbar End -->
 
     @if (!auth()->user()->hasVerifiedEmail())
-        <div class="container" style="padding-top: 8rem;">
-            <div class="row">
-                <div class="col-12">
-                    <div class="alert alert-outline-primary d-flex" role="alert">
-                        <span class="alert-content m-auto flex-1"><i data-feather="alert-triangle" width="20px" height="20px" class="icons text-danger"></i> <strong class="ms-2">Please check your email and follow the link to verify your email address</strong> </span>
-                        <form action="{{ route('verification.send') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-primary btn-sm ms-auto flex-2">Resend verification Email</button>
-                        </form>
-                    </div>
+    <div class="container" style="padding-top: 8rem;">
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-outline-primary d-flex" role="alert">
+                    <span class="alert-content m-auto flex-1"><i data-feather="alert-triangle" width="20px" height="20px" class="icons text-danger"></i> <strong class="ms-2">Please check your email and follow the link to verify your email address</strong> </span>
+                    <form action="{{ route('verification.send') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-primary btn-sm ms-auto flex-2">Resend verification Email</button>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     @endif
 
 
     <!-- Profile Start -->
     @if (Route::currentRouteName() == "user.chat")
-        <section class="section mt-60">
-            <div class="container mt-lg-3">
-                <div class="row">
-                    <div class="col-12">
-                        @yield('content')
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-        </section><!--end section-->
+    <section class="section mt-60">
+        <div class="container mt-lg-3">
+            <div class="row">
+                <div class="col-12">
+                    @yield('content')
+                </div><!--end col-->
+            </div><!--end row-->
+        </div><!--end container-->
+    </section><!--end section-->
     @else
-        @if (auth()->user()->hasVerifiedEmail())
-            <section class="section mt-60">
-        @else
-            <section class="section pt-0">
-        @endif
-            <div class="container mt-lg-3">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 col-12 d-lg-block d-none">
-                        @include('user.components.sidebar')
-                    </div><!--end col-->
+    <section class="section {{(auth()->user()->hasVerifiedEmail())?'mt-60':'pt-0'}}">
+        <div class="container mt-lg-3">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-12 d-lg-block d-none">
+                    @include('user.components.sidebar')
+                </div>
 
-                    <div class="col-lg-8 col-12">
-                        @yield('content')
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-        </section><!--end section-->
+                <div class="col-lg-8 col-12">
+                    @if(auth()->user()->hasVerifiedEmail())
+                    @yield('content')
+                    @else
+                    <div class="alert alert-outline-primary d-flex" role="alert">
+                        <span class="alert-content m-auto flex-1"><i data-feather="alert-triangle" width="20px" height="20px" class="icons text-danger"></i> <strong class="ms-2">After verify your email address, You can see your dashboard.</strong> </span>
+                    </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </section>
     @endif
 
     <!-- Profile End -->
@@ -148,83 +151,111 @@
                                     <input type="hidden" name="current_lng" value="">
                                     <p class="mt-3"><strong>OR</strong></p>
                                     <input type="text" maxlength="5" class="form-control w-25 m-auto text-center" name="postal_code" id="postal_code" placeholder="Enter Zip Code" autocomplete="off" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57">
-                                    <p class="mt-2 postal-code-full"><strong>New Castle, DE</strong></p>
+                                        <p class="mt-2 postal-code-full"><strong>New Castle, DE</strong></p>
 
-                                    <button type="button" class="btn btn-primary w-100 mt-5 apply-searching">Apply</button>
+                                        <button type="button" class="btn btn-primary w-100 mt-5 apply-searching">Apply</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </div><!--end row-->
-                    </div><!--end container-->
+                            </div><!--end row-->
+                        </div><!--end container-->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Nearby Modal -->
+        <!-- Nearby Modal -->
 
 
 
-    <!-- javascript -->
-    <script>
-        let notification_url = "{{ route('notification') }}";
-    </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ asset('theme/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('theme/js/gumshoe.polyfills.min.js') }}"></script>
-    <!-- SLIDER -->
-    <script src="{{ asset('theme/js/tiny-slider.js') }}"></script>
-    <!-- Icons -->
-    <script src="{{ asset('theme/js/feather.min.js') }}"></script>
-    <!-- Main Js -->
-    <script src="{{ asset('theme/js/plugins.init.js') }}"></script><!--Note: All init js like tiny slider, counter, countdown, maintenance, lightbox, gallery, swiper slider, aos animation etc.-->
-    <script src="{{ asset('theme/js/app.js') }}"></script><!--Note: All important javascript like page loader, menu, sticky menu, menu-toggler, one page menu etc. -->
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-    <script src="{{ asset('theme/js/jquery.fileuploader.min.js') }}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiMlDi4wWwmGpVcQqW09U1M68jI2OEfK0&callback=initMap&libraries=places&v=weekly" async defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.0/sweetalert2.min.js"></script>
-    <script src="{{ mix('js/app.js') }}"></script>
-    <script>
-        let zipcode = '';
-        let postal_code = '';
-        $(document).ready(function() {
-            $('#summernote').summernote();
+        <!-- javascript -->
+        <script>
+            let notification_url = "{{ route('notification') }}";
+        </script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="{{ asset('theme/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('theme/js/gumshoe.polyfills.min.js') }}"></script>
+        <!-- SLIDER -->
+        <script src="{{ asset('theme/js/tiny-slider.js') }}"></script>
+        <!-- Icons -->
+        <script src="{{ asset('theme/js/feather.min.js') }}"></script>
+        <!-- Main Js -->
+        <script src="{{ asset('theme/js/plugins.init.js') }}"></script><!--Note: All init js like tiny slider, counter, countdown, maintenance, lightbox, gallery, swiper slider, aos animation etc.-->
+        <script src="{{ asset('theme/js/app.js') }}"></script><!--Note: All important javascript like page loader, menu, sticky menu, menu-toggler, one page menu etc. -->
+        <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+        <script src="{{ asset('theme/js/jquery.fileuploader.min.js') }}"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiMlDi4wWwmGpVcQqW09U1M68jI2OEfK0&callback=initMap&libraries=places&v=weekly" async defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.0/sweetalert2.min.js"></script>
+        <script src="{{ mix('js/app.js') }}"></script>
+        <!-- toastr alert -->
+        <script src="{{asset('notification_assets/js/toastr.min.js')}}"></script>
+        <script !src="">
+            @if(Session::has('message'))
+            var type = "{{ Session::get('alert-type', 'info') }}";
+            switch (type) {
+                case 'info':
+                toastr.info("{{ Session::get('message') }}");
+                break;
 
-            $('input[name="files"]').fileuploader({
-                limit: 20,
-                maxSize: 50,
+                case 'warning':
+                toastr.warning("{{ Session::get('message') }}");
+                break;
 
-                addMore: true
+                case 'success':
+                toastr.success("{{ Session::get('message') }}");
+                break;
+
+                case 'error':
+                toastr.error("{{ Session::get('message') }}");
+                break;
+            }
+            @elseif(count($errors) > 0)
+            @foreach($errors->all() as $error)
+            toastr.error("{{ $error }}");
+            @endforeach
+            @endif
+        </script>
+        <script>
+            let zipcode = '';
+            let postal_code = '';
+            $(document).ready(function() {
+                $('#summernote').summernote();
+
+                $('input[name="files"]').fileuploader({
+                    limit: 20,
+                    maxSize: 50,
+
+                    addMore: true
+                });
+                getLocation();
             });
-            getLocation();
-        });
 
-        $(document).on("click", ".cat-item", function(e) {
-            e.preventDefault();
-            let val = $(this).data('slug');
-            $("[name='category']").val(val);
+            $(document).on("click", ".cat-item", function(e) {
+                e.preventDefault();
+                let val = $(this).data('slug');
+                $("[name='category']").val(val);
 
-            $(".navbar-search").submit();
-        });
+                $(".navbar-search").submit();
+            });
 
-        $(document).on("change", "[name='sorting']", function(e) {
-            let val = $(this).val();
-            $("[name='sort']").val(val);
+            $(document).on("change", "[name='sorting']", function(e) {
+                let val = $(this).val();
+                $("[name='sort']").val(val);
 
-            $(".navbar-search").submit();
-        });
+                $(".navbar-search").submit();
+            });
 
         // General Delete Function
         function deleteAlert(url) {
             Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.value) {
                     location.href = url;
@@ -235,13 +266,13 @@
         // General alert
         function alertMessage(url, msg) {
             Swal.fire({
-            title: 'Are you sure?',
-            text: msg,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, do it!'
+                title: 'Are you sure?',
+                text: msg,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, do it!'
             }).then((result) => {
                 if (result.value) {
                     location.href = url;

@@ -5,6 +5,7 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\NexmoMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Auth\Notifications\VerifyEmail;
 
@@ -30,7 +31,7 @@ class VerifyEmailNotification extends VerifyEmail
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail','nexmo'];
     }
 
     /**
@@ -46,7 +47,15 @@ class VerifyEmailNotification extends VerifyEmail
 
         return (new MailMessage)
             ->subject('Thank you for using FreeShopps.com | Confirm your Email Address')
-            ->view( 'mail.notification.verify_email', get_defined_vars());
+            ->view('mail.notification.verify_email', get_defined_vars());
+    }
+
+    public function toNexmo($notifiable)
+    {
+        $url = $this->verificationUrl($notifiable);
+
+        return (new NexmoMessage)
+        ->content('Please click the link below to verify your email address.'.$url.'</a>');
     }
 
     /**

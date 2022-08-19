@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-lg-4 col-12 mb-0 mb-md-4 pb-0 pb-md-2">
                 <a href="#" class="logo-footer">
-                    <img src="images/logo-dark.png" height="24" alt="">
+                    <img src="{{ asset(setting('logo')) }}" height="60" alt="">
                 </a>
                 <p class="mt-4 text-muted">Freeshopps is all in one platform where we can give away stuff we don’t need where other neighbors can pick them for free and be appreciated, it’s a lovely transaction how we can build a trust, friendly, positive environment, building a bridge in between the neighbors , that is the least we can do.</p>
                 <ul class="list-unstyled social-icon social mb-0 mt-4">
@@ -81,7 +81,7 @@
         <div class="row align-items-center">
             <div class="col-sm-12">
                 <div class="text-center">
-                    <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> FreeShopps. Developed with <i class="mdi mdi-heart text-danger"></i> by <a href="https://inbound.pk" target="_blank" class="text-reset">Inbound Agency</a>.</p>
+                     <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> FreeShopps. Developed with <i class="mdi mdi-heart text-danger"></i> by <a href="https://thelarasoft.com" target="_blank" class="text-reset">LaraSoft</a>.</p>
                 </div>
             </div><!--end col-->
         </div><!--end row-->

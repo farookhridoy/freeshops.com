@@ -29,7 +29,8 @@
     <link href="{{ asset('theme/css/style.css') }}" rel="stylesheet" type="text/css" id="theme-opt" />
     <link href="{{ asset('theme/css/colors/default.css') }}" rel="stylesheet" id="color-opt">
     <link href="{{ asset('theme/css/custom.css') }}" rel="stylesheet" id="color-opt">
-
+    <!-- toastr alert -->
+        <link rel="stylesheet" href="{{asset('notification_assets/css/toastr.min.css')}}" />
     <style>
         #toast-container .toast {
             opacity: 1;
@@ -162,6 +163,16 @@
                                                     <i data-feather="mail" class="fea icon-sm icons"></i>
                                                     <input type="email" class="form-control ps-5" placeholder="Email"
                                                     name="email">
+                                                </div>
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Phone <span class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="phone" class="fea icon-sm icons"></i>
+                                                    <input type="text" class="form-control ps-5" placeholder="Phone with country code withour '+' "
+                                                    name="phone">
                                                 </div>
                                             </div>
                                         </div><!--end col-->
@@ -372,6 +383,35 @@
     <script src="{{ asset('admin/plugins/sweet-alert2/sweetalert2.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js" integrity="sha512-7x3zila4t2qNycrtZ31HO0NnJr8kg2VI67YLoRSyi9hGhRN66FHYWr7Axa9Y1J9tGYHVBPqIjSE1ogHrJTz51g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+     <!-- toastr alert -->
+    <script src="{{asset('notification_assets/js/toastr.min.js')}}"></script>
+    <script !src="">
+        @if(Session::has('message'))
+        var type = "{{ Session::get('alert-type', 'info') }}";
+        switch (type) {
+            case 'info':
+            toastr.info("{{ Session::get('message') }}");
+            break;
+
+            case 'warning':
+            toastr.warning("{{ Session::get('message') }}");
+            break;
+
+            case 'success':
+            toastr.success("{{ Session::get('message') }}");
+            break;
+
+            case 'error':
+            toastr.error("{{ Session::get('message') }}");
+            break;
+        }
+        @elseif(count($errors) > 0)
+        @foreach($errors->all() as $error)
+        toastr.error("{{ $error }}");
+        @endforeach
+        @endif
+    </script>
+
     <script>
         $('#EmailsubscribeForm').submit(function(e) {
                 e.preventDefault();
@@ -555,10 +595,12 @@
                 url: url,
                 data: elm.serialize(),
                 success: function (response) {
-                    // console.log(response);
                     if (response.statusCode == 200) {
+                        //console.log(response.statusCode);
                         if (response.reload) {
-                            window.location.reload(true);
+                            //window.location.reload(true);
+                            toastr.success(response.message);
+                            window.location.replace(response.redirectTo);
                         } else {
                             elm.show();
                             $(".loader").hide();

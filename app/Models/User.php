@@ -30,6 +30,7 @@ class User extends Authenticatable
         'location_lat',
         'location_long',
         'fcm_token',
+        'otp_verify_code',
         'provider',
         'provider_id',
     ];
@@ -52,6 +53,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function routeNotificationForNexmo($notification)
+    {
+        return '8801730085925';
+    }
 
     public function sendPasswordResetNotification($token)
     {

@@ -340,7 +340,7 @@ class BlogPostController extends Controller
     {
         $blog_post = BlogPost::find($id)->delete();
 
-        return redirect()->route('admin.post.list')->with('success', 'Blog Post Successfully Deleted!');
+        return redirect()->route('admin.post.all')->with('success', 'Blog Post Successfully Deleted!');
     }
 
     public function statusChange($id = null, $status = null)

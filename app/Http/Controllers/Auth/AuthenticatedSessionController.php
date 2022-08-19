@@ -7,6 +7,8 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Notifications\VerifyOtpNotification;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -17,7 +19,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
-        return view('auth.login');
+        return redirect('admin/login');
+        //return view('auth.login');
     }
 
     public function adminLogin()
@@ -37,7 +40,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $user = auth()->user();
+        $user = User::where('id',auth()->user()->id)->first();
+        $user->otp_verify_code = $this->generateUniqueCode();
+        $user->save();
+        $user->notify(new VerifyOtpNotification($user));
 
         if ($request->ajax()) {
             if ($user->role == "1") {
@@ -45,6 +51,14 @@ class AuthenticatedSessionController extends Controller
                     'statusCode' => 200,
                     'reload' => true,
                     'message' => 'Login Successfull',
+                    'redirectTo' => RouteServiceProvider::USER,
+                ]);
+            }elseif ($user->role == "2") {
+                return response()->json([
+                    'statusCode' => 200,
+                    'reload' => true,
+                    'message' => 'Login Successfull',
+                    'redirectTo' => RouteServiceProvider::ADMIN,
                 ]);
             }
         } else {
@@ -53,6 +67,15 @@ class AuthenticatedSessionController extends Controller
             }
         }
 
+    }
+
+    public function generateUniqueCode()
+    {
+        do {
+            $code = random_int(100000, 999999);
+        } while (User::where("otp_verify_code", "=", $code)->first());
+  
+        return $code;
     }
 
     /**

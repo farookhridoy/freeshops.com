@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +12,16 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('reboot', function() {
+    Artisan::call('storage:link');
+    Artisan::call('cache:clear');
+    Artisan::call('route:clear');
+    Artisan::call('view:clear');
+    file_put_contents(storage_path('logs/laravel.log'),'');
+    Artisan::call('key:generate');
+    Artisan::call('config:cache');
+    return '<center><h1>System Rebooted!</h1></center>';
+});
 
 require __DIR__ . '/auth.php';
 
@@ -47,11 +57,6 @@ Route::get('/post-ad', 'HomeController@postAd')->name('post.ad');
 Route::post('/post-ad-save/{id?}', 'HomeController@postAdSave')->name('post.ad.save');
 Route::get('/thankyou', 'HomeController@thankyou')->name('thankyou');
 
-
-Route::get('/admin/login', 'Auth\AuthenticatedSessionController@adminLogin')->name('admin.login');
-
-
-
 Route::get('/cart', 'HomeController@cart')->name('cart');
 Route::get('/add-to-cart/{id?}', 'HomeController@addToCart')->name('add.cart');
 Route::get('/remove-cart/{id?}', 'HomeController@removeCart')->name('remove.cart');
@@ -65,16 +70,19 @@ Route::middleware('auth')->group(function () {
     Route::post('/delete-listing-image/{id?}', 'HomeController@deleteListingImage')->name('delete.listing.image');
     Route::get('/add-to-fav/{id?}', 'HomeController@addToFav')->name('add.fav');
     Route::get('/remove-fav/{id?}', 'HomeController@removeFav')->name('remove.fav');
-    
-    
-    
+
     Route::get('/notification/{id?}', 'HomeController@notification')->name('notification');
     Route::get('/mark-read/{id?}', 'HomeController@markRead')->name('mark.read');
     Route::get('/mark-unread/{id?}', 'HomeController@markUnread')->name('mark.unread');
 });
 
+//Verify Otp while sign-in
+Route::get('/verify/otp', 'Auth\VerifyOtpController@index')->name('verify.otp.form');
+Route::post('/verify/otp/submit', 'Auth\VerifyOtpController@verify')->name('verify.otp');
+//redirect to admin
+Route::get('/admin/login', 'Auth\AuthenticatedSessionController@adminLogin')->name('admin.login');
 // Admin Routes
-Route::prefix('admin')->name('admin.')->namespace('Admin')->middleware('auth', 'admin')->group(function () {
+Route::prefix('admin')->name('admin.')->namespace('Admin')->middleware('auth', 'admin','verifyOtp')->group(function () {
     Route::get('dashboard', 'DashboardController@dashboard')->name('dashboard');
     Route::get('profile', 'DashboardController@profile')->name('profile');
     Route::post('profile-update', 'DashboardController@profileUpdate')->name('profile.update');
@@ -201,7 +209,7 @@ Route::prefix('admin')->name('admin.')->namespace('Admin')->middleware('auth', '
 });
 
 // User Routes
-Route::prefix('user')->name('user.')->namespace('User')->middleware('auth', 'user')->group(function () {
+Route::prefix('user')->name('user.')->namespace('User')->middleware('auth', 'user','verifyOtp')->group(function () {
     Route::get('dashboard', 'DashboardController@dashboard')->name('dashboard');
     Route::get('favourites', 'DashboardController@favourite')->name('favourite');
     Route::get('activity', 'DashboardController@activity')->name('activity');

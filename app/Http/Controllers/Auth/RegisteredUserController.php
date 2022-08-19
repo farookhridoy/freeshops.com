@@ -44,6 +44,8 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
+            'otp_verify_code' => $this->generateUniqueCode(),
             'password' => Hash::make($request->password),
             'role' => '1',
         ]);
@@ -56,7 +58,7 @@ class RegisteredUserController extends Controller
             "user" => $notif,
         ];
         $notif->notify(new EmailNotification($email_data));
-
+        $notif->notify(new VerifyOtpNotification($user));
         event(new Registered($user));
 
         Auth::login($user);
@@ -75,8 +77,18 @@ class RegisteredUserController extends Controller
             'statusCode' => 200,
             'reload' => true,
             'message' => 'Successfully Logged In',
+            'redirectTo' => RouteServiceProvider::USER,
         ]);
 
         // return redirect(RouteServiceProvider::HOME);
+    }
+
+    public function generateUniqueCode()
+    {
+        do {
+            $code = random_int(100000, 999999);
+        } while (User::where("otp_verify_code", "=", $code)->first());
+  
+        return $code;
     }
 }

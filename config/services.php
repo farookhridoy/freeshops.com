@@ -52,4 +52,8 @@ return [
         'redirect' => 'https://freeshopps.com/social-login/google/callback',
     ],
 
+    'nexmo' => [
+        'sms_from' => '8801730085925',
+    ],
+
 ];

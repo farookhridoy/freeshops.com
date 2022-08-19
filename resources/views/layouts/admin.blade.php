@@ -32,7 +32,8 @@
         <link href="{{ asset('admin/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('admin/assets/css/metisMenu.min.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('admin/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
-
+        <!-- toastr alert -->
+        <link rel="stylesheet" href="{{asset('notification_assets/css/toastr.min.css')}}" />
         <style>
             .cursor-pointer {
                 cursor: pointer;
@@ -138,6 +139,9 @@
         <!-- Sweet-Alert  -->
         <script src="{{ asset('admin/plugins/sweet-alert2/sweetalert2.min.js') }}"></script>
         <script src="{{ asset('admin/assets/pages/jquery.sweet-alert.init.js') }}"></script>
+
+        <!-- toastr alert -->
+        <script src="{{asset('notification_assets/js/toastr.min.js')}}"></script>
 
         <script src="{{ asset('admin/plugins/dropify/js/dropify.min.js') }}"></script>
         <script src="{{ asset('admin/plugins/tinymce/tinymce.min.js') }}"></script>
@@ -254,6 +258,32 @@
                 ]
             });
 
+        </script>
+        <script !src="">
+            @if(Session::has('message'))
+            var type = "{{ Session::get('alert-type', 'info') }}";
+            switch (type) {
+                case 'info':
+                toastr.info("{{ Session::get('message') }}");
+                break;
+
+                case 'warning':
+                toastr.warning("{{ Session::get('message') }}");
+                break;
+
+                case 'success':
+                toastr.success("{{ Session::get('message') }}");
+                break;
+
+                case 'error':
+                toastr.error("{{ Session::get('message') }}");
+                break;
+            }
+            @elseif(count($errors) > 0)
+            @foreach($errors->all() as $error)
+            toastr.error("{{ $error }}");
+            @endforeach
+            @endif
         </script>
         @yield('js')
     </body>
