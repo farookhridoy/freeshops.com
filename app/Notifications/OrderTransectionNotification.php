@@ -9,18 +9,18 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\NexmoMessage;
 use App\Models\User;
 
-class VerifyOtpNotification extends Notification implements ShouldQueue
+class OrderTransectionNotification extends Notification
 {
     use Queueable;
-    private $user;
+    private $order;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($order)
     {
-         $this->user = $user;
+        $this->order = $order;
     }
 
     /**
@@ -31,8 +31,8 @@ class VerifyOtpNotification extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        //return ['mail','nexmo'];
         return ['mail'];
+         //return ['mail','nexmo'];
     }
 
     /**
@@ -43,21 +43,25 @@ class VerifyOtpNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        
+        $user = User::where('role', '2')->first();
+
         return (new MailMessage)
-                    ->subject('Verify OTP From FreeShopps')
-                    ->line('Dear '. $this->user->name)
-                    ->line('You have successfully attempted to sign in. Please click on the link below to verify your phone and complete the signing process. OTP code is below.')
-                    ->line('OTP is: '. $this->user->otp_verify_code)
-                    ->action('Click to Verify Your signing process', route('verify.otp.form'))
-                    ->line('Do not attempted to signing? It is likely someone else just type in your email address by accident . Feel free to ignore this option.')
-                    ->line('Thank you for using our application!');
+                    ->subject('New Order Has Been Placed. #'.$this->order->order_no)
+                    ->line('Dear '. $user->name)
+                    ->line('A new Order has been  placed !. Click to see')
+                    ->action($this->order->order_no, route('admin.order.review'))
+                    ->line('Thank you for using our application!')
+                    ->line('FreeShopps');
     }
 
     // public function toNexmo($notifiable)
-    // {
+    // {   
+    //      
     //     return (new NexmoMessage)
-    //     ->content('FreeShopps Code: '.$this->user->otp_verify_code);
+    //     ->content('A new Order has been  placed. Order no #: '.$this->order->order_no);
     // }
+
 
     /**
      * Get the array representation of the notification.

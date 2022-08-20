@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Notifications\EmailNotification;
 use App\Notifications\UserNotification;
+use App\Notifications\OrderTransectionNotification;
 use App\Models\StoreSchedule;
 use Illuminate\Http\Request;
 use App\Models\ListingImage;
@@ -41,6 +42,8 @@ use File;
 use Str;
 use CartP;
 use Hash;
+use DB;
+
 class HomeController extends Controller
 {
 
@@ -257,7 +260,7 @@ class HomeController extends Controller
 
     public function all(Request $req)
     {
-        
+
         $cats = Category::where('status', true)->orderBy('name', 'ASC')->get();
         
         if(session('distance')){
@@ -278,8 +281,8 @@ class HomeController extends Controller
            ->where('availablity', '1')
            ->with('listing_images', 'category');
        }
-       
-       
+
+
 
        if (isset($req->category)) {
         $category = Category::where('slug', $req->category)->first();
@@ -486,12 +489,12 @@ public function addToFav($id = null)
     ]);
 
     if ($fav) {
-            $log = new LogActivity();
-            $log->logable_type = 'App\Models\Favourite';
-            $log->logable_id = $fav->id;
-            $log->narration = 'Product is added to Favourites';
-            $log->user_id = auth()->user()->id;
-            $log->save();
+        $log = new LogActivity();
+        $log->logable_type = 'App\Models\Favourite';
+        $log->logable_id = $fav->id;
+        $log->narration = 'Product is added to Favourites';
+        $log->user_id = auth()->user()->id;
+        $log->save();
         return response()->json([
             'statusCode' => 200,
             'message' => 'Added To Favourites',
@@ -515,10 +518,7 @@ public function removeFav($id = null)
 
 public function cart()
 {
-        // $user = auth()->user();
-        // $cart = $user->cart;
 
-        // return view('front.cart', get_defined_vars());
     if((!empty(CartP::count())))
     {
         return view('front.cart');    
@@ -592,6 +592,7 @@ public function checkout(Request $req)
 
 public function stripeInit(Request $req)
 {
+
     if(empty(Auth::check()))
     {
         $req->validate([
@@ -615,7 +616,7 @@ public function stripeInit(Request $req)
     }
 
     //\Stripe\Stripe::setApiKey('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');
-     \Stripe\Stripe::setApiKey('sk_test_51GsRHaFIQnHdLDIGAhFTaPgfOeByt61tHt8iEOaPiXaHFlBBl8AG9bn6DerCJNYfYSkmq85hPW5rnbEP7BVpuEQC00IxkWTzml');
+    \Stripe\Stripe::setApiKey('sk_test_51GsRHaFIQnHdLDIGAhFTaPgfOeByt61tHt8iEOaPiXaHFlBBl8AG9bn6DerCJNYfYSkmq85hPW5rnbEP7BVpuEQC00IxkWTzml');
 
     $jsonStr = file_get_contents('php://input');
     $jsonObj = json_decode($jsonStr);
@@ -687,118 +688,132 @@ public function stripeInit(Request $req)
             $api_error = $e->getMessage();
         }
 
+
         if(!empty($payment_intent) && $payment_intent->status == 'succeeded'){
-                // Transaction details
-            $transactionID = $payment_intent->id;
-            $paidAmount = $payment_intent->amount;
-            $paidAmount = ($paidAmount/100);
-            $paidCurrency = $payment_intent->currency;
-            $payment_status = $payment_intent->status;
+            DB::beginTransaction();
+            try {
+            // Transaction details
+                $transactionID = $payment_intent->id;
+                $paidAmount = $payment_intent->amount;
+                $paidAmount = ($paidAmount/100);
+                $paidCurrency = $payment_intent->currency;
+                $payment_status = $payment_intent->status;
 
-            $name = $email = '';
-            if(!empty($customer)){
-                $name = !empty($customer->name)?$customer->name:'';
-                $email = !empty($customer->email)?$customer->email:'';
-            }
+                $name = $email = '';
+                if(!empty($customer)){
+                    $name = !empty($customer->name)?$customer->name:'';
+                    $email = !empty($customer->email)?$customer->email:'';
+                }
 
-            $transaction = Transaction::create([
-                'user_id' => $user->id,
-                'payment_method' => 'stripe',
-                'payment_id' => $transactionID,
-                'narration' => 'Processing Fee of '.CartP::count().' items purchase',
-                'amount' => $paidAmount,
-            ]);
+                $transaction = Transaction::create([
+                    'user_id' => $user->id,
+                    'payment_method' => 'stripe',
+                    'payment_id' => $transactionID,
+                    'narration' => 'Processing Fee of '.CartP::count().' items purchase',
+                    'amount' => $paidAmount,
+                ]);
 
-            $payment_id = 0;
+                $payment_id = 0;
 
-            if ($transaction) {
-                foreach (CartP::content() as $item) {
-                    $order = Order::create([
-                        'order_no' => generateOrderNo(),
-                        'transaction_id' => $transaction->id,
-                        'listing_id' => $item->id,
-                        'amount' => 1,
-                    ]);
-                    if($order){
-                        $listing = Listing::find($item->id);
-                        $listing->availablity = '3';
-                        $listing->save();
+                if ($transaction) {
+                    foreach (CartP::content() as $item) {
+                        $order = Order::create([
+                            'order_no' => generateOrderNo(),
+                            'transaction_id' => $transaction->id,
+                            'listing_id' => $item->id,
+                            'amount' => 1,
+                        ]);
+                        if($order){
+                            $listing = Listing::find($item->id);
+                            $listing->availablity = '3';
+                            $listing->save();
 
-                        $log = new LogActivity();
-                        $log->logable_type = 'App\Models\Order';
-                        $log->logable_id = $order->id;
-                        $log->narration = 'You Placed an order';
-                        $log->user_id = auth()->user()->id;
-                        $log->save();
-                    }
-                    if ($order) {
-                        $user->cart()->delete();
-
-                        CartP::destroy();
-
-                        $check = Thread::all()->filter(function($q) use($user, $order) {
-                            return $q->participants()->where('user_id', $user->id)->first() && $q->participants()->where('user_id', $order->listing->user->id)->first();
-                        })->count();
-
-                        if ($check == 0) {
-                            $thread = Thread::create();
-                            Participant::create([
-                                'thread_id' => $thread->id,
-                                'user_id' => $order->transaction->user->id,
-                            ]);
-                            Participant::create([
-                                'thread_id' => $thread->id,
-                                'user_id' => $order->listing->user->id,
-                            ]);
+                            $log = new LogActivity();
+                            $log->logable_type = 'App\Models\Order';
+                            $log->logable_id = $order->id;
+                            $log->narration = 'You Placed an order';
+                            $log->user_id = auth()->user()->id;
+                            $log->save();
                         }
+                        if ($order) {
+                            $user->cart()->delete();
 
-                        $data = collect([
-                            'icon' => asset('bell-icon.jpg'),
-                            'title' => 'New Order!',
-                            'body' => 'You have got new order request on your product. Click to see',
-                            'action' => route('user.order', $order->order_no),
-                        ]);
+                            CartP::destroy();
 
-                        $notif = User::find($order->listing->user->id);
-                        $notif->notify(new UserNotification($data));
+                            $check = Thread::all()->filter(function($q) use($user, $order) {
+                                return $q->participants()->where('user_id', $user->id)->first() && $q->participants()->where('user_id', $order->listing->user->id)->first();
+                            })->count();
 
-                        $email_data = [
-                            "subject" => "Good news: You've received an order request",
-                            "view" => "user.order_received",
-                            "order" => $order,
-                            "user" => $notif,
-                        ];
-                        $notif->notify(new EmailNotification($email_data));
+                            if ($check == 0) {
+                                $thread = Thread::create();
+                                Participant::create([
+                                    'thread_id' => $thread->id,
+                                    'user_id' => $order->transaction->user->id,
+                                ]);
+                                Participant::create([
+                                    'thread_id' => $thread->id,
+                                    'user_id' => $order->listing->user->id,
+                                ]);
+                            }
 
-                        $notif = User::find(auth()->user()->id);
-                        $email_data = [
-                            "subject" => "Good news: Your order has been placed",
-                            "view" => "user.order_placed",
-                            "order" => $order,
-                            "user" => $notif,
-                        ];
-                        $notif->notify(new EmailNotification($email_data));
+                            $data = collect([
+                                'icon' => asset('bell-icon.jpg'),
+                                'title' => 'New Order!',
+                                'body' => 'You have got new order request on your product. Click to see',
+                                'action' => route('user.order', $order->order_no),
+                            ]);
 
-                        $data = collect([
-                            'icon' => asset('bell-icon.jpg'),
-                            'title' => 'New Order!',
-                            'body' => 'A new Order has been  placed !. Click to see',
-                            'action' => route('admin.order.review'),
-                        ]);
-                        $notif = User::where('role', '2')->first();
-                        $notif->notify(new UserNotification($data));
+                            $notif = User::find($order->listing->user->id);
+                            $notif->notify(new UserNotification($data));
+
+                            $email_data = [
+                                "subject" => "Good news: You've received an order request",
+                                "view" => "user.order_received",
+                                "order" => $order,
+                                "user" => $notif,
+                            ];
+                            $notif->notify(new EmailNotification($email_data));
+
+                            $notif = User::find(auth()->user()->id);
+                            $email_data = [
+                                "subject" => "Good news: Your order has been placed",
+                                "view" => "user.order_placed",
+                                "order" => $order,
+                                "user" => $notif,
+                            ];
+                            $notif->notify(new EmailNotification($email_data));
+
+                            $data = collect([
+                                'icon' => asset('bell-icon.jpg'),
+                                'title' => 'New Order!',
+                                'body' => 'A new Order has been  placed !. Click to see',
+                                'action' => route('admin.order.review'),
+                            ]);
+                            $notif = User::where('role', '2')->first();
+                            $notif->notify(new UserNotification($data));
+                            $notif->notify(new OrderTransectionNotification($order));
+                        }
                     }
                 }
-            }
 
-            if($transaction){
-                $payment_id = $transaction->id;
-            }
 
-            $output = [
-                'payment_id' => base64_encode($payment_id)
-            ];
-            return response()->json($output);
+                if($transaction){
+                    $payment_id = $transaction->id;
+                }
+
+                $output = [
+                    'payment_id' => base64_encode($payment_id)
+                ];
+
+                DB::commit();
+
+                return response()->json($output);
+
+            }catch(\Exception $e){
+                DB::rollback();
+                http_response_code(500);
+                return response()->json(['error' => $e->getMessage()]);
+            }
         } else {
             http_response_code(500);
             return response()->json(['error' => 'Transaction has been Failed']);
