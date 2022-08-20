@@ -128,10 +128,10 @@
                                 <div class="error_form">{{$errors->first('password')}}</div>
                                 <div class="mt-3"></div>
                                 <hr>
-                            @endif                            
+                            @endif 
 
-                            <input id="c_name" type="text" class="form-control mb-3" name="c_name" value="{{ old('c_name') }}" placeholder="Card Holder Name" autocomplete="off">
-                            <input type="email" id="c_email" class="form-control" required name="c_email" value="{{ old('c_email') }}" placeholder="Card Holder Email" autocomplete="off">
+                            <input id="c_name" type="text" class="form-control mb-3" name="c_name" value="{{ (Auth::user()->name)?Auth::user()->name:old('c_name') }}" placeholder="Card Holder Name" autocomplete="off">
+                            <input type="email" id="c_email" class="form-control" required name="c_email" value="{{ (Auth::user()->email)?Auth::user()->email:old('c_email') }}" placeholder="Card Holder Email" autocomplete="off">
                             <div id="stripe-element" class="mt-3"></div>
                             <div id="card-errors" role="alert"></div>
                             <div class="mt-4 pt-2">
@@ -154,7 +154,7 @@
 @endsection
 @section('js')
     <script src="https://js.stripe.com/v3/"></script>
-    <script src="{{ asset('theme/js/checkout.js') }}" STRIPE_PUBLISHABLE_KEY="pk_live_51JzVL8DjSoojJtxhbV404PLsFP8MtokrnkWJkJKJJZZ1rAjuBsxn5jApJsudsGMRbcm0ILDffGUcZisH5oWGORSd00JpHDgWxm" defer></script>
-    <!--<script src="{{ asset('theme/js/checkout.js') }}" STRIPE_PUBLISHABLE_KEY="pk_test_51GsRHaFIQnHdLDIGTLSqcVcu8KCJxuLOsA5xpBDiBaz9OU3fsIvud4kJYKtr78qT3qv7IcDuFjWhjF7pWFLyShOf009Nm67zCP" defer></script>-->
+   {{--  <script src="{{ asset('theme/js/checkout.js') }}" STRIPE_PUBLISHABLE_KEY="pk_live_51JzVL8DjSoojJtxhbV404PLsFP8MtokrnkWJkJKJJZZ1rAjuBsxn5jApJsudsGMRbcm0ILDffGUcZisH5oWGORSd00JpHDgWxm" defer></script> --}}
+    <script src="{{ asset('theme/js/checkout.js') }}" STRIPE_PUBLISHABLE_KEY="pk_test_51GsRHaFIQnHdLDIGTLSqcVcu8KCJxuLOsA5xpBDiBaz9OU3fsIvud4kJYKtr78qT3qv7IcDuFjWhjF7pWFLyShOf009Nm67zCP" defer></script>
 
 @endsection

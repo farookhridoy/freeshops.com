@@ -20,7 +20,7 @@
                             <th>Image</th>
                             <th>Name</th>
                             <th>Narration</th>
-                            {{-- <th>Action</th> --}}
+                            
                             </tr>
                         </thead>
                         <tbody>
@@ -28,9 +28,10 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->created_at->format('d/m/y') }}</td>
-                                    @if($item->logable_type == 'App\Models\Order')
+                                    @if($item->logable_type == 'App\Models\Order' || $item->logable_type == 'App\Models\Favourite')
                                         <td><img style="width: 50px; height: 50px" src="{{ asset( $item->logable->listing->featured_image) }}"></td>
                                         <td>{{ $item->logable->listing->title }}</td>
+                                    
                                     @else
                                         <td><img style="width: 50px; height: 50px" src="{{ asset( $item->logable->featured_image) }}"></td>
                                         <td>{{ $item->logable->title }}</td>

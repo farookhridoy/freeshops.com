@@ -23,6 +23,11 @@
             <a href="{{ route('user.dashboard') }}" style="padding: 8px 20px; outline: none; text-decoration: none; font-size: 16px; letter-spacing: 0.5px; transition: all 0.3s; font-weight: 600; border-radius: 6px; background-color: #f85c70; border: 1px solid #f85c70; color: #ffffff;">Dashboard</a>
         </td>
     </tr>
+    <tr>
+        <td style="padding: 15px 24px;">
+            <a href="{{ route('user.chat') }}?active={{ $order->listing->user->id }}" style="padding: 8px 20px; outline: none; text-decoration: none; font-size: 16px; letter-spacing: 0.5px; transition: all 0.3s; font-weight: 600; border-radius: 6px; background-color: #4285f4; border: 1px solid #4285f4;color: #ffffff;">Chat With Owner</a>
+        </td>
+    </tr>
 
     <tr>
         <td style="padding: 15px 24px 15px; color: #8492a6;">

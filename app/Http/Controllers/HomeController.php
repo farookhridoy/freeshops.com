@@ -374,9 +374,12 @@ public function postAdSave(Request $req, $id = null)
     $listing->video_url = $req->video_url;
     $listing->phone = $req->phone;
     $listing->email = $req->email;
-    $listing->location = $req->location;
-    $listing->location_lat = $req->location_lat;
-    $listing->location_long = $req->location_long;
+    //$listing->location = $req->location;
+    $listing->location = 'Little Rocks Inc, West 47th Street, New York, NY, USA';
+    //$listing->location_lat = $req->location_lat;
+    $listing->location_lat = '40.7572345';
+    //$listing->location_long = $req->location_long;
+    $listing->location_long = '-73.9803859';
     $listing->show_map = $req->show_map ? 1 : 0;
     $listing->status = "2";
     $listing->save();
@@ -483,12 +486,12 @@ public function addToFav($id = null)
     ]);
 
     if ($fav) {
-            // $log = new LogActivity();
-            // $log->logable_type = 'App\Models\Favourite';
-            // $log->logable_id = $fav->id;
-            // $log->narration = 'Product is added to Favourites';
-            // $log->user_id = auth()->user()->id;
-            // $log->save();
+            $log = new LogActivity();
+            $log->logable_type = 'App\Models\Favourite';
+            $log->logable_id = $fav->id;
+            $log->narration = 'Product is added to Favourites';
+            $log->user_id = auth()->user()->id;
+            $log->save();
         return response()->json([
             'statusCode' => 200,
             'message' => 'Added To Favourites',
@@ -568,9 +571,6 @@ public function removeCart($id = null)
 {
 
     CartP::remove($id);
-
-
-
     return redirect()->back()->with('success', 'Removed from Cart');
 }
 
@@ -614,8 +614,8 @@ public function stripeInit(Request $req)
         $user = auth()->user();    
     }
 
-    \Stripe\Stripe::setApiKey('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');
-        // \Stripe\Stripe::setApiKey('sk_test_51GsRHaFIQnHdLDIGAhFTaPgfOeByt61tHt8iEOaPiXaHFlBBl8AG9bn6DerCJNYfYSkmq85hPW5rnbEP7BVpuEQC00IxkWTzml');
+    //\Stripe\Stripe::setApiKey('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');
+     \Stripe\Stripe::setApiKey('sk_test_51GsRHaFIQnHdLDIGAhFTaPgfOeByt61tHt8iEOaPiXaHFlBBl8AG9bn6DerCJNYfYSkmq85hPW5rnbEP7BVpuEQC00IxkWTzml');
 
     $jsonStr = file_get_contents('php://input');
     $jsonObj = json_decode($jsonStr);

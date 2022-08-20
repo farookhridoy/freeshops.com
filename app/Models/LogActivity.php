@@ -9,6 +9,14 @@ class LogActivity extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    protected $fillable = [
+        'logable_type',
+        'logable_id',
+        'narration',
+        'created_at',
+        'updated_at',
+        'user_id'
+    ];
 
     public function logable()
     {
