@@ -154,7 +154,7 @@
 @endsection
 @section('js')
     <script src="https://js.stripe.com/v3/"></script>
-   {{--  <script src="{{ asset('theme/js/checkout.js') }}" STRIPE_PUBLISHABLE_KEY="pk_live_51JzVL8DjSoojJtxhbV404PLsFP8MtokrnkWJkJKJJZZ1rAjuBsxn5jApJsudsGMRbcm0ILDffGUcZisH5oWGORSd00JpHDgWxm" defer></script> --}}
-    <script src="{{ asset('theme/js/checkout.js') }}" STRIPE_PUBLISHABLE_KEY="pk_test_51GsRHaFIQnHdLDIGTLSqcVcu8KCJxuLOsA5xpBDiBaz9OU3fsIvud4kJYKtr78qT3qv7IcDuFjWhjF7pWFLyShOf009Nm67zCP" defer></script>
+    <script src="{{ asset('theme/js/checkout.js') }}" STRIPE_PUBLISHABLE_KEY="pk_live_51JzVL8DjSoojJtxhbV404PLsFP8MtokrnkWJkJKJJZZ1rAjuBsxn5jApJsudsGMRbcm0ILDffGUcZisH5oWGORSd00JpHDgWxm" defer></script>
+    {{-- <script src="{{ asset('theme/js/checkout.js') }}" STRIPE_PUBLISHABLE_KEY="pk_test_51GsRHaFIQnHdLDIGTLSqcVcu8KCJxuLOsA5xpBDiBaz9OU3fsIvud4kJYKtr78qT3qv7IcDuFjWhjF7pWFLyShOf009Nm67zCP" defer></script> --}}
 
 @endsection
