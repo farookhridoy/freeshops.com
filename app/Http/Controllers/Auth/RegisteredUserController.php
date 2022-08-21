@@ -76,8 +76,8 @@ class RegisteredUserController extends Controller
         return response()->json([
             'statusCode' => 200,
             'reload' => true,
-            'message' => 'Successfully Logged In',
-            'redirectTo' => RouteServiceProvider::USER,
+            'message' => 'Please check your email to complete the verification process.',
+            'redirectTo' => '/',
         ]);
 
         // return redirect(RouteServiceProvider::HOME);

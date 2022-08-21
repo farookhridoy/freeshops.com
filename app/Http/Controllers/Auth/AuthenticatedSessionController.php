@@ -50,14 +50,14 @@ class AuthenticatedSessionController extends Controller
                 return response()->json([
                     'statusCode' => 200,
                     'reload' => true,
-                    'message' => 'Login Successfull',
-                    'redirectTo' => RouteServiceProvider::USER,
+                    'message' => 'Please check your email to complete the verification process.',
+                    'redirectTo' => '/',
                 ]);
             }elseif ($user->role == "2") {
                 return response()->json([
                     'statusCode' => 200,
                     'reload' => true,
-                    'message' => 'Login Successfull',
+                    'message' => 'Please check your email to complete the verification process.',
                     'redirectTo' => RouteServiceProvider::ADMIN,
                 ]);
             }

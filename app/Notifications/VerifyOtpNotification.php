@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\NexmoMessage;
 use App\Models\User;
 
-class VerifyOtpNotification extends Notification implements ShouldQueue
+class VerifyOtpNotification extends Notification
 {
     use Queueable;
     private $user;
@@ -46,9 +46,8 @@ class VerifyOtpNotification extends Notification implements ShouldQueue
         return (new MailMessage)
                     ->subject('Verify OTP From FreeShopps')
                     ->line('Dear '. $this->user->name)
-                    ->line('You have successfully attempted to sign in. Please click on the link below to verify your phone and complete the signing process. OTP code is below.')
-                    ->line('OTP is: '. $this->user->otp_verify_code)
-                    ->action('Click to Verify Your signing process', route('verify.otp.form'))
+                    ->line('We take your privacy seriously, just want to make sure this is you, please click on the link below to verify and complete the sign in process')
+                    ->action('Click to Verify Your signing process', route('verify.otp.form',$this->user->otp_verify_code))
                     ->line('Do not attempted to signing? It is likely someone else just type in your email address by accident . Feel free to ignore this option.')
                     ->line('Thank you for using our application!');
     }

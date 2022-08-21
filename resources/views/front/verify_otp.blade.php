@@ -24,7 +24,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <p class="text-center">
-                                <strong>Verify your phone number</strong>.<br> Enter the 6 digit you received. 
+                                <strong>Your privecy is importent to us</strong>.<br> Enter the 6 digit you received from your email.. 
                             </p>
                         </div>
                         <div class="col-lg-12">

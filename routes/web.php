@@ -77,12 +77,13 @@ Route::middleware('auth')->group(function () {
 });
 
 //Verify Otp while sign-in
-Route::get('/verify/otp', 'Auth\VerifyOtpController@index')->name('verify.otp.form');
-Route::post('/verify/otp/submit', 'Auth\VerifyOtpController@verify')->name('verify.otp');
+Route::get('/verify/otp/{slug}', 'Auth\VerifyOtpController@verify')->name('verify.otp.form');
+//Route::post('/verify/otp/submit', 'Auth\VerifyOtpController@verify')->name('verify.otp');
+//
 //redirect to admin
 Route::get('/admin/login', 'Auth\AuthenticatedSessionController@adminLogin')->name('admin.login');
 // Admin Routes
-Route::prefix('admin')->name('admin.')->namespace('Admin')->middleware('auth', 'admin','verifyOtp')->group(function () {
+Route::prefix('admin')->name('admin.')->namespace('Admin')->middleware('auth', 'admin')->group(function () {
     Route::get('dashboard', 'DashboardController@dashboard')->name('dashboard');
     Route::get('profile', 'DashboardController@profile')->name('profile');
     Route::post('profile-update', 'DashboardController@profileUpdate')->name('profile.update');
@@ -209,7 +210,7 @@ Route::prefix('admin')->name('admin.')->namespace('Admin')->middleware('auth', '
 });
 
 // User Routes
-Route::prefix('user')->name('user.')->namespace('User')->middleware('auth', 'user','verifyOtp')->group(function () {
+Route::prefix('user')->name('user.')->namespace('User')->middleware('auth', 'user')->group(function () {
     Route::get('dashboard', 'DashboardController@dashboard')->name('dashboard');
     Route::get('favourites', 'DashboardController@favourite')->name('favourite');
     Route::get('activity', 'DashboardController@activity')->name('activity');
