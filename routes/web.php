@@ -211,7 +211,7 @@ Route::prefix('admin')->name('admin.')->namespace('Admin')->middleware('auth', '
 });
 
 // User Routes
-Route::prefix('user')->name('user.')->namespace('User')->middleware('auth', 'user')->group(function () {
+Route::prefix('user')->name('user.')->namespace('User')->middleware('auth', 'user','verifyOtp')->group(function () {
     Route::get('dashboard', 'DashboardController@dashboard')->name('dashboard');
     Route::get('favourites', 'DashboardController@favourite')->name('favourite');
     Route::get('activity', 'DashboardController@activity')->name('activity');

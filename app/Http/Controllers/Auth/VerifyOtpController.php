@@ -17,8 +17,7 @@ class VerifyOtpController extends Controller
                    
                    return $this->redirectBackWithSuccess('OTP has been successfully verified.','home');
                }elseif (auth()->user()->role == "2") {
-                   return $this->redirectBackWithSuccess('OTP has been successfully verified.','admin.dashboard');
-                   
+                   return $this->redirectBackWithSuccess('OTP has been successfully verified.','admin.dashboard');     
             }
         }else{
             return view('front.verify_otp');

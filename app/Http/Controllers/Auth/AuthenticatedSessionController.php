@@ -51,7 +51,7 @@ class AuthenticatedSessionController extends Controller
                     'statusCode' => 200,
                     'reload' => true,
                     'message' => 'Please check your email to complete the verification process.',
-                    'redirectTo' => '/',
+                    'redirectTo' => RouteServiceProvider::USER,
                 ]);
             }elseif ($user->role == "2") {
                 return response()->json([
