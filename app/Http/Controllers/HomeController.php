@@ -73,7 +73,7 @@ class HomeController extends Controller
                     $q->orWhere('availablity', '1');
                     $q->orWhere('availablity','3');
                 })
-                ->where('user_id', '!=', $user->id)
+                // ->where('user_id', '!=', $user->id)
                 ->having("distance", "<", $rad)
                 ->with('listing_images', 'category')
                 ->orderBy('created_at', 'DESC')->get();

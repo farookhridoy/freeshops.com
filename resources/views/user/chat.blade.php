@@ -3,12 +3,15 @@
 @section('title', 'Chat')
 
 @section('css')
-    <link href="{{ asset('theme/css/mailing-chat.css') }}" rel="stylesheet">
-    <style>
-        label {
-            display: block;
-        }
-    </style>
+<link href="{{ asset('theme/css/mailing-chat.css') }}" rel="stylesheet">
+<style>
+    label {
+        display: block;
+    }
+    .mail-write-box {
+        width: 60px !important;        
+    }
+</style>
 @endsection
 
 @section('content')
@@ -25,63 +28,66 @@
                     </div>
                     <div class="people">
                         @foreach ($threads as $item)
-                            @if(!is_null(getOtherParticipant($item->id)))
-                                <div class="person" id="thread_{{ $item->id }}" data-user="{{ getOtherParticipant($item->id)->user->id }}" data-chat="{{ $item->id }}">
-                                    <div class="pending-pointer"></div>
-                                    <div class="user-info">
-                                         <div class="f-head">
-                                             <img src="{{ asset('default.png') }}" alt="avatar">
-                                         </div>
-                                         <div class="f-body">
-                                             <div class="meta-info">
-                                                 <span class="user-name" data-name="Anonymous">Anonymous</span>
-                                                 <p>Tap to chat</p>
-                                             </div>
-                                         </div>
-                                     </div>
-                                </div>
-                            @endif
-                        @endforeach
-                    </div>
+                        @if(!is_null(getOtherParticipant($item->id)))
+                        <div class="person" id="thread_{{ $item->id }}" data-user="{{ getOtherParticipant($item->id)->user->id }}" data-chat="{{ $item->id }}">
+                            <div class="pending-pointer"></div>
+                            <div class="user-info">
+                               <div class="f-head">
+                                   <img src="{{ asset('default.png') }}" alt="avatar">
+                               </div>
+                               <div class="f-body">
+                                   <div class="meta-info">
+                                       <span class="user-name" data-name="Anonymous">{{getOtherParticipant($item->id)->user->name}}</span>
+                                       <p>Tap to chat</p>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       @endif
+                       @endforeach
+                   </div>
+               </div>
+               <div class="chat-box" style="border-left: 1px solid #ccc;">
+                <div class="chat-not-selected">
+                    <p> <i data-feather="message-square" class="fea icon-sm icons"></i> Click a conversation to chat</p>
                 </div>
-                <div class="chat-box" style="border-left: 1px solid #ccc;">
-                    <div class="chat-not-selected">
-                        <p> <i data-feather="message-square" class="fea icon-sm icons"></i> Click a conversation to chat</p>
+                <div class="chat-box-inner">
+                    <div class="chat-meta-user shadow">
+                        <div class="current-chat-user-name">
+                            <span>
+                                <img src="{{ asset('default.png') }}" alt="dynamic-image">
+                                <span class="name">Campaign #1</span>
+                            </span>
+                        </div>
                     </div>
-                    <div class="chat-box-inner">
-                        <div class="chat-meta-user shadow">
-                            <div class="current-chat-user-name">
-                                <span>
-                                    <img src="{{ asset('default.png') }}" alt="dynamic-image">
-                                    <span class="name">Campaign #1</span>
-                                </span>
-                            </div>
-                        </div>
 
-                        <div class="chat-conversation-box">
-                            <div id="chat-conversation-box-scroll" class="chat-conversation-box-scroll position-relative">
-                                <div class="chat-active-order">
-                                    <p>Active Orders:</p>
-                                    <div class="orders-list"></div>
-                                </div>
-                                <div class="chat" design-type="2" data-chat="1">
+                    <div class="chat-conversation-box">
+                        <div id="chat-conversation-box-scroll" class="chat-conversation-box-scroll position-relative">
+                            <div class="chat-active-order">
+                                <p>Active Orders:</p>
+                                <div class="orders-list"></div>
+                            </div>
+                            <div class="chat" design-type="2" data-chat="1">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="warning-message">
+                        <small class="text-muted"><strong>Sharing of such information is prohibited on our platform. This is against to FreeShopps Community Guidelines.</strong></small>
+                    </div>
+                    <div class="chat-footer shadow">
+                        <div class="chat-input">
+                            <form class="chat-form" method="POST" enctype="multipart/form-data">
+                                    <label for="file"><i data-feather="file-plus" class="fea icon-sm icons"></i></label>
+                                    <input type="file" name="file" id="file" hidden>
+                                <div class="input-group">
+                                    <input type="text" class="mail-write-box form-control" name="message" placeholder="Message" autocomplete="off">
+                                    <a class="btn btn-primary" type="submit">
+                                        <svg style="left: 8px !important;top: 13px!important;color: #f8f9fa!important;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                                    </a>
 
                                 </div>
-                            </div>
-                        </div>
-                        <div class="warning-message">
-                            <small class="text-muted"><strong>Sharing of such information is prohibited on our platform. This is against to FreeShopps Community Guidelines.</strong></small>
-                        </div>
-                        <div class="chat-footer shadow">
-                            <div class="chat-input">
-                                <form class="chat-form" method="POST" enctype="multipart/form-data">
-                                    <div>
-                                        <label for="file"><i data-feather="file-plus" class="fea icon-sm icons"></i></label>
-                                        <input type="file" name="file" id="file" hidden>
-                                        <input type="text" class="mail-write-box form-control" name="message" placeholder="Message" autocomplete="off">
-                                    </div>
-                                </form>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -89,18 +95,19 @@
         </div>
     </div>
 </div>
+</div>
 
 @endsection
 @section('js')
-    <script>
-        let thread_id = '';
-        let active_user_id = '';
-        var prohibited = new Array("payment", "gmail", "email", "contact", "facebook", "whatsapp", "twitter", "linkedIn", "snapchat", "@");
-    </script>
-    <script src="{{ asset('theme/js/mailbox-chat.js') }}"></script>
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<script>
+    let thread_id = '';
+    let active_user_id = '';
+    var prohibited = new Array("payment", "gmail", "email", "contact", "facebook", "whatsapp", "twitter", "linkedIn", "snapchat", "@");
+</script>
+<script src="{{ asset('theme/js/mailbox-chat.js') }}"></script>
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
-    <script>
+<script>
 
         // Enable pusher logging - don't include this in production
         Pusher.logToConsole = true;
@@ -257,4 +264,4 @@
             $("[data-user='"+active+"']").click();
         }
     </script>
-@endsection
+    @endsection
