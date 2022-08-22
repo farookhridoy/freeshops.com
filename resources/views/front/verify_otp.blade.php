@@ -19,15 +19,18 @@
     <div class="container">
         <div class="row">
             <div class="col-6 offset-md-3">
-                <form class="p-4 forget" action="{{ route('verify.otp') }}" method="POST">
-                    @csrf
+                {{-- <form class="p-4 forget" action="{{ route('verify.otp') }}" method="POST">
+                    @csrf --}}
                     <div class="row">
                         <div class="col-lg-12">
                             <p class="text-center">
-                                <strong>Your privecy is importent to us</strong>.<br> Enter the 6 digit you received from your email.. 
+                                <div class="alert alert-outline-primary d-flex" role="alert">
+                                <span class="alert-content m-auto flex-1"><i data-feather="alert-triangle" width="20px" height="20px" class="icons text-danger"></i> 
+                                <strong class="ms-2">We take your privacy seriously, just want to make sure this is you , please check your email and click on the link below to verify and complete the sign in process.</strong> </span>
+                            </div>
                             </p>
                         </div>
-                        <div class="col-lg-12">
+                        {{-- <div class="col-lg-12">
                             <div class="mb-3">
                                 <label class="form-label">Code <span class="text-danger">*</span></label>
                                 <div class="form-icon position-relative">
@@ -42,9 +45,9 @@
                             <div class="d-grid">
                                 <button class="btn btn-primary" type="submit">Verify</button>
                             </div>
-                        </div><!--end col-->
+                        </div><!--end col--> --}}
                     </div><!--end row-->
-                </form>
+                {{-- </form> --}}
             </div>
         </div>
     </div>

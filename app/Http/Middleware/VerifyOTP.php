@@ -20,6 +20,6 @@ class VerifyOTP
             return $next($request);
         }
 
-        return redirect('/verify/otp');
+        return redirect('/verify/otp/index');
     }
 }

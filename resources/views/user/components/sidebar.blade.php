@@ -1,6 +1,7 @@
 <div class="sidebar sticky-bar p-4 rounded shadow">
     <div class="widget">
         <ul class="list-unstyled sidebar-nav mb-0" id="navmenu-nav">
+             @if(auth()->user()->otp_verify_code==null)
             <li class="navbar-item account-menu px-0">
                 <a href="{{ route('user.dashboard') }}" class="navbar-link d-flex rounded shadow align-items-center py-2 px-4">
                     <span class="h4 mb-0"><i class="uil uil-dashboard"></i></span>
@@ -41,7 +42,7 @@
                     <h6 class="mb-0 ms-2">Recent Activities</h6>
                 </a>
             </li>
-
+             @endif
             <li class="navbar-item account-menu px-0 mt-2">
                 <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="navbar-link d-flex rounded shadow align-items-center py-2 px-4">
                     <span class="h4 mb-0"><i class="uil uil-dashboard"></i></span>

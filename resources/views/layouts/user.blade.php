@@ -70,26 +70,28 @@
     <section class="section {{(auth()->user()->hasVerifiedEmail())?'mt-60':'pt-0'}}">
         <div class="container mt-lg-3">
             <div class="row">
-                @if(auth()->user()->otp_verify_code==null)
+                
                 <div class="col-lg-4 col-md-6 col-12 d-lg-block d-none">
                     @include('user.components.sidebar')
                 </div>
 
                 <div class="col-lg-8 col-12">
-                    @if(auth()->user()->hasVerifiedEmail())
-                    @yield('content')
+                    @if(auth()->user()->otp_verify_code==null)
+                        @if(auth()->user()->hasVerifiedEmail())
+                        @yield('content')
+                        @else
+                        <div class="alert alert-outline-primary d-flex" role="alert">
+                            <span class="alert-content m-auto flex-1"><i data-feather="alert-triangle" width="20px" height="20px" class="icons text-danger"></i> <strong class="ms-2">After verify your email address, You can see your dashboard.</strong> </span>
+                        </div>
+                        @endif
                     @else
-                    <div class="alert alert-outline-primary d-flex" role="alert">
-                        <span class="alert-content m-auto flex-1"><i data-feather="alert-triangle" width="20px" height="20px" class="icons text-danger"></i> <strong class="ms-2">After verify your email address, You can see your dashboard.</strong> </span>
-                    </div>
+                        <div class="alert alert-outline-primary d-flex" role="alert">
+                                <span class="alert-content m-auto flex-1"><i data-feather="alert-triangle" width="20px" height="20px" class="icons text-danger"></i> 
+                                <strong class="ms-2">We take your privacy seriously, just want to make sure this is you , please check your email and click on the link below to verify and complete the sign in process.</strong> </span>
+                            </div>
                     @endif
+                   
                 </div>
-                @else
-                <div class="alert alert-outline-primary d-flex" role="alert">
-                        <span class="alert-content m-auto flex-1"><i data-feather="alert-triangle" width="20px" height="20px" class="icons text-danger"></i> 
-                        <strong class="ms-2">We take your privacy seriously, just want to make sure this is you , please check your email and click on the link below to verify and complete the sign in process.</strong> </span>
-                    </div>
-                @endif
                 
             </div>
         </div>

@@ -78,14 +78,17 @@
                     <div class="chat-footer shadow">
                         <div class="chat-input">
                             <form class="chat-form" method="POST" enctype="multipart/form-data">
-                                    <label for="file"><i data-feather="file-plus" class="fea icon-sm icons"></i></label>
-                                    <input type="file" name="file" id="file" hidden>
                                 <div class="input-group">
-                                    <input type="text" class="mail-write-box form-control" name="message" placeholder="Message" autocomplete="off">
-                                    <a class="btn btn-primary" type="submit">
-                                        <svg style="left: 8px !important;top: 13px!important;color: #f8f9fa!important;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                                    </a>
 
+                                    <label for="file"><button class="btn upload_file"><i data-feather="file-plus" class="fea icon-sm icons col-2"></i></button></label>
+                                    <input type="file" name="file" id="file" hidden>
+
+                                    <input type="text" class="mail-write-box form-control col-8" name="message" placeholder="Message" autocomplete="off">
+
+                                    <button class="btn btn-primary" type="submit">
+                                        <svg style="left: 8px !important;top: 13px!important;color: #f8f9fa!important;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                                    </button>
+                                    
                                 </div>
                             </form>
                         </div>
@@ -108,7 +111,9 @@
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
 <script>
-
+    $("[for=file] .upload_file").on("click", function(){
+        $("#file").trigger("click");
+    })
         // Enable pusher logging - don't include this in production
         Pusher.logToConsole = true;
 
